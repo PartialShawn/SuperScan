@@ -5,6 +5,7 @@ Detect changed files using PHP/MySQL/CRON
 
 1. Copy `configure-default.php` to `configure.php`.
 2. Update `configure.php` for your system.
+3. Import `CreateTables.sql` for you database.
 
 ## Introduction
 
