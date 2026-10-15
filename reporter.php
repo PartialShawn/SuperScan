@@ -1,35 +1,7 @@
 <?php
 
-// 	CONFIGURE
-
-//	SET Report Output
-//	Output to e-mail addresses and/or to STDOUT (monitor)
-
-//	Output as e-mail (true or false)
-//		Recommend false for testing and true for CRON
-$email_out = true;
-
-//	E-mail addresses to send report of change
-$addresses = array("address1@domain.com","address2@domain.com");
-
-//	Output to monitor (true or false)
-//		Recommend true for testing and false for CRON
-$report_out = false;
-
-//	Account to access
-//		Account name does not need to match the real account 
-//			name but is managed by the PATH definition
-$acct = 'MyAccount';
-
-//	Set PATH
-if ($_SERVER['REMOTE_ADDR']=='127.0.0.1')
-{
-//	*** define("PATH_DB", '{local path to}'.'/db.php}');
-	define("PATH_DB", 'X:/path/to/superscan/scandb.php}');
-} else {
-	define("PATH_DB", "/home/account/scandb.php");
-}
-//	END OF CONFIGURE
+//	CONFIGURE account for reporter
+require('configure.php');
 
 $report = "SuperScan Daily Report\r\n\r\n";
 

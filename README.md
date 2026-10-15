@@ -1,7 +1,12 @@
 # SuperScan
 Detect changed files using PHP/MySQL/CRON
 
-## INTRODUCTION
+## Installation
+
+1. Copy `configure-default.php` to `configure.php`.
+2. Update `configure.php` for your system.
+
+## Introduction
 
 This set of scripts is an evolution from what I offered as a SitePoint article and has evolved primarily through the suggestion of Han Wechgelaer who suggested that I extend the original "hashscan" to compare and record the changes in new database tables and offered a daily report of changes.
 	

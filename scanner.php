@@ -7,7 +7,7 @@
 //	End of Intro
 
 //	CONFIGURE account for scan
-require('configure_DK.php');
+require('configure.php');
 
 //	INITIALIZE
 //	Initialization of scanner variables and tables
