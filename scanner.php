@@ -12,8 +12,8 @@ require('configure.php');
 //	INITIALIZE
 //	Initialization of scanner variables and tables
 
-//	Connect to database - $scandb is the returned handle
-require('scandb.php');
+//	Connect to database
+$scandb = mysqli_connect(SERVER,USER,PASS,DATABASE);
 
 //	Clear and title the report variable before starting
 $report = "SuperScan File Check for $acct\r\n\r\n";
@@ -302,6 +302,4 @@ if ($testing || $report_out)
 $baseline = $current = $added = $altered = $deleted = array();
 
 //	Close database
-@mysqli_close($scandb);
-
-?>
+mysqli_close($scandb);

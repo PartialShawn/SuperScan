@@ -11,9 +11,7 @@ $yesterday = date("Y-m-d H:i:s", mktime(date('H'), date('i'), date('s'), date('n
 $report .= "SuperScan log report for $acct file changes since ".$yesterday.":\r\n\r\n";
 
 // 	use define statements or enter values directly in the mysqli_connect
-include('scandb.php');
-
-//	$scandb = mysqli_connect(SERVER,USER,PASS,DATABASE);
+$scandb = mysqli_connect(SERVER,USER,PASS,DATABASE);
 
 $results = mysqli_query($scandb,"SELECT stamp, status, file_path, file_last_mod FROM history WHERE acct = '$acct' AND stamp > '$yesterday'");
 if (!$results)
@@ -37,4 +35,3 @@ if ($email_out)
 if ($report_out) echo nl2br($report);
 
 mysqli_close($scandb);
-?>
