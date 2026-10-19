@@ -8,6 +8,9 @@ require 'vendor/PHPMailer/src/PHPMailer.php';
 require 'vendor/PHPMailer/src/SMTP.php';
 
 
+
+// #region Initialize
+
 //	CONFIGURE account for reporter
 require('configure.php');
 
@@ -32,12 +35,14 @@ if (!$results)
 	}
 }
 
-// OUTPUT Report
+// #endregion
+
+
+
+// #region OUTPUT Report
+
 if ($email_out)
 {
-	// $to = (count($addresses)>1) ? implode(", ", $addresses): $addresses[0];
-	// $mailed = mail($to, $acct . ' Integrity Monitor Log Report',$report); 
-
 	//Create an instance; passing `true` enables exceptions
 	$mail = new PHPMailer(true);
 
@@ -69,11 +74,11 @@ if ($email_out)
 		echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
 	}
 
-
-
 }
 
 // To TEST this script, activate the following line on
 if ($report_out) echo nl2br($report);
+
+// #endregion
 
 mysqli_close($scandb);

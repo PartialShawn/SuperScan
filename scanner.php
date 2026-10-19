@@ -18,16 +18,14 @@ require 'vendor/PHPMailer/src/SMTP.php';
 //	CONFIGURE account for scan
 require('configure.php');
 
-//	INITIALIZE
+
+/* ********************************* */
+// #region INITIALIZE
+/* ********************************* */
+
 //	Initialization of scanner variables and tables
 
-//	Connect to database
-try {
-	$scandb = mysqli_connect(SERVER,USER,PASS,DATABASE);
-} catch (mysqli_sql_exception $e) {
-	$e->getMessage();
-	exit(1);
-}
+
 
 //	Clear and title the report variable before starting
 $report = "SuperScan File Check for $acct\r\n\r\n";
@@ -42,6 +40,15 @@ $current = array();
 $added = array();
 $altered = array();
 $deleted = array();	
+
+
+//	Connect to database
+try {
+	$scandb = mysqli_connect(SERVER,USER,PASS,DATABASE);
+} catch (mysqli_sql_exception $e) {
+	$e->getMessage();
+	exit(1);
+}
 
 //	Limit first scan entries in history table
 
@@ -69,7 +76,12 @@ if ($last_scanned_records->num_rows > 0)
 $start = microtime(true);
 
 //	END OF INITIALIZE
+// #endregion
 
+
+/* ********************************* */
+// #region Obtain baseline
+/* ********************************* */
 
 //	BASELINE
 // 	Read from database to obtain file paths, hash values and 
@@ -119,9 +131,12 @@ if ($baseline_results)
 	if ($testing) echo "<p>$count_baseline baseline files extracted from database.</p>";
 }
 //	Baseline files read into baseline array and baseline_count made
+// #endregion
 
 
-//	SCAN
+/* ********************************* */
+// #region SCAN
+/* ********************************* */
 
 //	Scan directories and generate hash values for current files
 $dir = new RecursiveDirectoryIterator(SCAN_PATH);
@@ -287,10 +302,14 @@ foreach($deleted as $file_path => $value_ignored)
 	if ($testing && mysqli_error($scandb)) echo mysqli_error($scandb);
 }
 //	End of Deleted file handling
+// #endregion
 
 
-//	PREPARE Report 
-	
+/* ********************************* */
+// #region Prepare Report 
+/* ********************************* */
+
+
 //	Get scan duration
 $elapsed = round(microtime(true) - $start, 5);
 	
@@ -380,9 +399,13 @@ if ($testing && mysqli_error($scandb)) echo "History table clean-up problem: " .
 if ($testing && mysqli_error($scandb)) echo "Scanned table clean-up problem: " . mysqli_error($scandb) . "<br />";
 
 //	End of Report preparation and clean-up
+// #endregion
 
 
-//	OUTPUT Report
+/* ********************************* */
+// #region Output Report
+/* ********************************* */
+
 //	E-mail Report
 if ($email_out && 0 < $count_changes)
 {
@@ -426,6 +449,9 @@ if ($testing || $report_out)
 
 	
 }
+
+// #endregion
+
 
 //	Destroy tables (release to memory)
 $baseline = $current = $added = $altered = $deleted = array();
