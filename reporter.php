@@ -1,4 +1,12 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\SMTP;
+
+require 'vendor/PHPMailer/src/Exception.php';
+require 'vendor/PHPMailer/src/PHPMailer.php';
+require 'vendor/PHPMailer/src/SMTP.php';
+
 
 //	CONFIGURE account for reporter
 require('configure.php');
@@ -27,8 +35,42 @@ if (!$results)
 // OUTPUT Report
 if ($email_out)
 {
-	$to = (count($addresses)>1) ? implode(", ", $addresses): $addresses[0];
-	$mailed = mail($to, $acct . ' Integrity Monitor Log Report',$report); 
+	// $to = (count($addresses)>1) ? implode(", ", $addresses): $addresses[0];
+	// $mailed = mail($to, $acct . ' Integrity Monitor Log Report',$report); 
+
+	//Create an instance; passing `true` enables exceptions
+	$mail = new PHPMailer(true);
+
+	try {
+		//Server settings
+		$mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+		$mail->isSMTP();                                            //Send using SMTP
+		$mail->Host       = SMTP_HOST;                     //Set the SMTP server to send through
+		$mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+		$mail->Username   = SMTP_USERNAME;                     //SMTP username
+		$mail->Password   = SMTP_PASSWORD;                               //SMTP password
+		$mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+		$mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+
+		//Recipients
+		$mail->setFrom(SMTP_FROM, 'Integrity Monitor Log Report');
+		foreach(REPORT_ADDRESSES as $email) {
+			$mail->addAddress($email);
+		}
+
+		//Content
+		$mail->isHTML(false);                                  //Set email format to HTML
+		$mail->Subject = $acct . ' Integrity Monitor Log Report';
+		$mail->Body    = $report;
+
+		$mail->send();
+		echo 'Message has been sent';
+	} catch (Exception $e) {
+		echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+	}
+
+
+
 }
 
 // To TEST this script, activate the following line on

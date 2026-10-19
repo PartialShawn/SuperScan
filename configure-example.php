@@ -108,7 +108,25 @@ if ($_SERVER['REMOTE_ADDR']=='127.0.0.1')
 
 
 // Database connection configuration
-define('SERVER','localhost');
-define('USER','User_Name');
-define('PASS','Password for User_Name');
-define('DATABASE','User_hashscan');
+define('SERVER','LOCALHOST');
+define('USER','USER_NAME');
+define('PASS','USER_NAME_PASSWORD');
+define('DATABASE','DATABASE_NAME');
+
+// Email configuration
+define('SMTP_HOST', 'HOST');
+define('SMTP_USERNAME', 'FORM_ACCOUNT');
+define('SMTP_PASSWORD', 'PASSWORD');
+define('SMTP_FROM', 'FROM_ADDRESS');
+//	E-mail address(es) to send reports of change
+define('REPORT_ADDRESSES', array("user1@domain1.com", "user2@domain2.com"));
+
+// Hash Check Delay in microseconds
+// Used to make sure the webserver doesn't stop responding to other requests
+// 1_000_000 microseconds is 1 second.
+// 1_000 microseconds is 1/1000s of a second
+define("CHECK_DELAY", 500);
+
+// PATH_LENGTH is the maximum number of charcter for the full path and filename
+// that can be saved to the `file_path` property in `baseline` and `history` table.
+define("MAX_PATH_LENGTH", 300);
