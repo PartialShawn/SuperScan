@@ -175,8 +175,6 @@ while ($iter->valid())
 			$current[$file_path] = array('file_hash' => hash_file("sha1", $file_path), 'file_last_mod' => date("Y-m-d H:i:s", filemtime($file_path)));
 
 			if (strlen($file_path) > MAX_PATH_LENGTH) {
-				echo "\n\n\nOVER 200!\n\n\n";
-
 				print(PHP_EOL."Error: file path is over the character limit `PATH_LENGTH` in configuration file.".PHP_EOL);
 				print(strlen($file_path) . " characters in " . $file_path.PHP_EOL);
 			}
@@ -289,15 +287,10 @@ foreach($deleted as $file_path => $value_ignored)
 	//	Record deletion in history table
 	$timestamp = date('Y-m-d h:i:s');
 
-	try {
-		$stmt = $scandb->prepare("INSERT INTO history SET `stamp` = ?, `status` = 'Deleted', `file_path` = ?, `hash_org` = ?, `hash_new` = 'Not Applicable', `file_last_mod` = ?, `acct` = ?");
-		$stmt->bind_param("sssss", $timestamp, $file_path, $deleted[$file_path]['file_hash'], $deleted[$file_path]['file_last_mod'], $acct);
-		$stmt->execute();
-		$stmt->close();
-
-	} catch (TypeError $e) {
-		var_dump($e);
-	}
+	$stmt = $scandb->prepare("INSERT INTO history SET `stamp` = ?, `status` = 'Deleted', `file_path` = ?, `hash_org` = ?, `hash_new` = 'Not Applicable', `file_last_mod` = ?, `acct` = ?");
+	$stmt->bind_param("sssss", $timestamp, $file_path, $deleted[$file_path]['file_hash'], $deleted[$file_path]['file_last_mod'], $acct);
+	$stmt->execute();
+	$stmt->close();
 
 	if ($testing && mysqli_error($scandb)) echo mysqli_error($scandb);
 }
