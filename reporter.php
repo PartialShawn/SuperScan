@@ -17,9 +17,10 @@ require('configure.php');
 $report = "SuperScan Daily Report\r\n\r\n";
 
 //	Prepare scan report
-$yesterday = date("Y-m-d H:i:s", mktime(date('H'), date('i'), date('s'), date('n'), date('j')-1,date('Y')));
+$yesterday = date("Y-m-d H:i:s", strtotime("-1 day"));
+$yesterday_text = date("Y-m-d H:i:s e", strtotime("-1 day"));
 
-$report .= "SuperScan log report for $acct file changes since ".$yesterday.":\r\n\r\n";
+$report .= "SuperScan log report for $acct file changes since ".$yesterday_text.":\r\n\r\n";
 
 // 	use define statements or enter values directly in the mysqli_connect
 $scandb = mysqli_connect(SERVER,USER,PASS,DATABASE);
